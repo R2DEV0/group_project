@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge,chrome=1"> 
+    <title>Ninja Gold</title>
+
+    <style>
+        body{
+            background-color: aquamarine;
+            margin: 30px auto auto 600px;
+            font-family: monospace;
+            font-size: larger;
+            max-width: 970px;
+            max-height: 1000px;
+        }
+
+        #farm{
+            border: 2px solid black;
+            display: inline-block;
+            max-width: 300px;
+            height: 200px;
+            padding-left: 20px;
+            padding-right: 20px;
+            text-align: center;
+            background-color:  rgba(72, 230, 32, 0.726);
+        }
+
+        #cave{
+            border: 2px solid black;
+            display: inline-block;
+            max-width: 300px;
+            height: 200px;
+            padding-left: 20px;
+            padding-right: 20px;
+            text-align: center;
+            background-color: rgba(161, 130, 43, 0.575);
+        }
+
+        #house{
+            border: 2px solid black;
+            display: inline-block;
+            max-width: 300px;
+            height: 200px;
+            padding-left: 20px;
+            padding-right: 30px;
+            text-align: center;
+            background-color: rgba(32, 166, 219, 0.575);
+        }
+
+        #casino{
+            border: 2px solid black;
+            display: block;
+            max-width: 300px;
+            height: 200px;
+            padding-right: 30px;
+            padding-left: 10px;
+            margin-top: 10px;
+            margin-left: 140px;
+            text-align: center;
+            background-color: rgba(245, 83, 183, 0.575);
+        }
+
+        #score{
+            margin-left: 150px;
+            margin-bottom: 50px;
+            font-size: 30px;
+            border: 2px solid black;
+            display: inline-block;
+            width: 300px;
+            text-align: center;
+            background-color: darkgoldenrod;
+            color: white;
+        }
+
+        #log{
+            border: 2px groove black;
+            width: 850px;
+            height: 500px;
+            margin-left: -120px;
+            background-color: whitesmoke;
+        }
+
+        #act{
+            margin-bottom: 5px;
+            font-weight: bold;
+            margin-left: -70px;
+        }
+
+        button{
+            background-color: gold;
+            border: 3px inset gray;
+            margin-top: 20px;
+        }
+
+        .reset{
+            margin-left: 250px;
+        }
+
+    </style>
+
+
+</head>
+
+<body>
+    <p id='score'> Your Gold: {{gold}} </p> <br>
+
+    <div id="farm">
+        <form action="/process_money" method="POST">
+            {% csrf_token %}
+            <h1>Farm</h1>
+            <p>(earns 10-20 golds)</p>
+            <input type="hidden" name="location" value="farm">
+            <button type="submit">Find Gold</button>
+        </form>
+    </div>
+
+    <div id="cave">
+        <form action="/process_money" method="POST">
+            {% csrf_token %}
+            <h1>Cave</h1>
+            <p>(earns 5-10 golds)</p>
+            <input type="hidden" name="location" value='cave'>
+            <button type="submit ">Find Gold</button>
+        </form>
+    </div>
+
+    <div id="house">
+        <form action="/process_money" method="POST">
+            {% csrf_token %}
+            <h1>House</h1>
+            <p>(earns 2-5 golds)</p>
+            <input type="hidden" name="location" value="house">
+            <button type="submit">Find Gold</button>
+        </form>
+    </div>
+
+    <div id="casino">
+        <form action="/process_money" method="POST">
+            {% csrf_token %}
+            <h1>Casino</h1>
+            <p>(earns/takes 0-50 golds)</p>
+            <input type="hidden" name="location" value='casino'>
+            <button type="submit">Find Gold</button>
+        </form>
+    </div>
+
+
+    <p id="act">Activies:</p>
+    <div id="log" style="max-height: 200px; overflow:auto;">
+        <ul>
+            {% for line in activity_log reversed %} {% if 'whopping' in line %}
+            <li style="color:green">{{line}}</li>
+            {% elif 'Ouch' in line %}
+            <li style="color:red">{{line}}</li>
+            {% else %}
+            <li style="color:black">{{line}}</li>
+            {% endif %} {% endfor %}
+        </ul>
+    </div>
+
+    <form action="reset" method='GET'>
+        <button class ="reset" type="submit">RESET</button>
+    </form>
+
+</body>
